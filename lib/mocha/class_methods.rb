@@ -1,6 +1,7 @@
 require 'mocha/mockery'
 require 'mocha/class_method'
 require 'mocha/any_instance_method'
+require 'mocha/instance_with_id_method'
 
 module Mocha
 
@@ -39,7 +40,25 @@ module Mocha
         return true if @stubba_object.private_instance_methods(include_superclass_methods = true).include?(method)
         return false
       end
+    end
 
+    class InstanceWithId < AnyInstance
+      def initialize(klass, id)
+        @stubba_object = klass
+        @stubba_id = id
+      end
+
+      def mocha
+        @mocha ||= Mocha::Mockery.instance.mock_impersonating_instance_with_id(@stubba_object, @stubba_id)
+      end
+
+      def stubba_method
+        Mocha::InstanceWithIdMethod
+      end
+
+      def stubba_id
+        @stubba_id
+      end
     end
 
     # @return [Mock] a mock object which will detect calls to any instance of this class.
@@ -57,6 +76,13 @@ module Mocha
       end
       @any_instance ||= AnyInstance.new(self)
     end
+
+    def instance_with_id(instance_id)
+      if frozen?
+        raise StubbingError.new("can't stub method on frozen object: #{mocha_inspect}.any_instance", caller)
+      end
+      @instance_with_id ||= InstanceWithId.new(self, instance_id)
+    end    
 
   end
 
