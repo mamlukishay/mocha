@@ -74,8 +74,11 @@ module Mocha
       iterator.each { |*args|
         method_name = args.shift
         mockery.on_stubbing(self, method_name)
-        stubba_id = stubba_object.try(:stubba_id)
-        method = stubba_method.new(stubba_object, method_name, stubba_id)
+        if self.class == Mocha::ClassMethods::InstanceWithId
+          method = stubba_method.new(stubba_object, method_name, stubba_id)
+        else
+          method = stubba_method.new(stubba_object, method_name)
+        end
         mockery.stubba.stub(method)
         expectation = mocha.expects(method_name, caller)
         expectation.returns(args.shift) if args.length > 0
@@ -121,8 +124,11 @@ module Mocha
       iterator.each { |*args|
         method_name = args.shift
         mockery.on_stubbing(self, method_name)
-        stubba_id = stubba_object.try(:stubba_id)
-        method = stubba_method.new(stubba_object, method_name, stubba_id)
+        if self.class == Mocha::ClassMethods::InstanceWithId
+          method = stubba_method.new(stubba_object, method_name, stubba_id)
+        else
+          method = stubba_method.new(stubba_object, method_name)
+        end
         mockery.stubba.stub(method)
         expectation = mocha.stubs(method_name, caller)
         expectation.returns(args.shift) if args.length > 0

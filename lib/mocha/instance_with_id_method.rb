@@ -6,7 +6,7 @@ module Mocha
   class InstanceWithIdMethod < AnyInstanceMethod
 
     def mock
-      stubbee.any_instance.mocha
+      stubbee.instance_with_id(@stubba_id).mocha
     end
 
     def reset_mocha
@@ -34,8 +34,10 @@ module Mocha
 
     def define_new_method
       stubbee.class_eval(%{
-        def #{method}(*args, &block)
-          self.class.any_instance.mocha.method_missing(:#{method}, *args, &block)
+        if self.id == @stubba_id
+          def #{method}(*args, &block)
+            self.class.instance_with_id(#{stubba_id}).mocha.method_missing(:#{method}, *args, &block)
+          end          
         end
       }, __FILE__, __LINE__)
     end

@@ -32,7 +32,7 @@ module Mocha
     end
 
     def mocha_inspect
-      "#<InstanceWithId #{@instance_id}: #{@klass.mocha_inspect}>"
+      "#<InstanceWithId [#{@instance_id}]: #{@klass.mocha_inspect}>"
     end
 
   end  
