@@ -6,8 +6,9 @@ module Mocha
 
     attr_reader :stubbee, :method
 
-    def initialize(stubbee, method)
+    def initialize(stubbee, method, stubee_id = nil)
       @stubbee = stubbee
+      @stubbe_id = stubee_id
       @original_method, @original_visibility = nil, nil
       @method = RUBY_VERSION < '1.9' ? method.to_s : method.to_sym
     end

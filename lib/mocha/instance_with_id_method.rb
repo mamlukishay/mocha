@@ -34,9 +34,9 @@ module Mocha
 
     def define_new_method
       stubbee.class_eval(%{
-        if self.id == @stubba_id
+        if self.id == stubbe_id
           def #{method}(*args, &block)
-            self.class.instance_with_id(#{stubba_id}).mocha.method_missing(:#{method}, *args, &block)
+            self.class.instance_with_id(#{stubbe_id}).mocha.method_missing(:#{method}, *args, &block)
           end          
         end
       }, __FILE__, __LINE__)
