@@ -24,6 +24,19 @@ module Mocha
 
   end
 
+  class ImpersonatingInstanceWithIdName
+
+    def initialize(klass, id)
+      @klass = klass
+      @instance_id = id
+    end
+
+    def mocha_inspect
+      "#<InstanceWithId #{@instance_id}: #{@klass.mocha_inspect}>"
+    end
+
+  end  
+
   class Name
 
     def initialize(name)

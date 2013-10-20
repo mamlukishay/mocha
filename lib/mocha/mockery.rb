@@ -47,6 +47,10 @@ module Mocha
       add_mock(Mock.new(self, ImpersonatingAnyInstanceName.new(klass), &block))
     end
 
+    def instance.mock_impersonating_instance_with_id(klass, instance_id, &block)
+      add_mock(Mock.new(self, ImpersonatingInstanceWithIdName.new(klass, instance_id), &block))
+    end
+
     def new_state_machine(name)
       add_state_machine(StateMachine.new(name))
     end
